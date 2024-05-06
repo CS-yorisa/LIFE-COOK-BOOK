@@ -1,0 +1,34 @@
+scalar UUID
+scalar Long
+scalar LocalTime
+
+type Gageboo {
+    no : Int
+    id : UUID
+    category : String
+    asset: String
+    date: String
+    name: String
+    expence: String
+    star : Int
+    expenceInclude: Boolean
+}
+
+input GagebooInput {
+    id : UUID
+    category: String
+    asset: String
+    date: String
+    name: String
+    expence: String
+    star : Int
+    expenceInclude: Boolean
+}
+
+type Query {
+    getGagebooById(id: UUID): [Gageboo]
+}
+
+type Mutation{
+    saveGageboo(gageboo: GagebooInput): Gageboo
+}
