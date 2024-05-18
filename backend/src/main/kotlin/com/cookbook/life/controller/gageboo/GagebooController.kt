@@ -13,7 +13,6 @@ import java.util.UUID
 @RequiredArgsConstructor
 class GagebooController (private var gagebooService: GagebooService) {
 
-
     @QueryMapping
     fun getGagebooById(@Argument("id") id: UUID): List<Gageboo>{
         return gagebooService.getGagebooById(id)
