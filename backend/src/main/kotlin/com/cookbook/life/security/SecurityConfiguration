@@ -1,4 +1,4 @@
-package com.cookbook.life
+package com.cookbook.life.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import lombok.RequiredArgsConstructor
@@ -55,7 +55,7 @@ class SecurityConfig {
             .formLogin { obj: FormLoginConfigurer<HttpSecurity> -> obj.disable() }
             .authorizeHttpRequests(Customizer { authorize ->
                 authorize
-                    .requestMatchers("/", "/member/*").permitAll()
+                    .requestMatchers("/", "/login", "/auth/**", "/account", "/member/*").permitAll()
                     .anyRequest().authenticated()
             }) // 폼 로그인은 현재 사용하지 않음
             //				.formLogin(formLogin -> formLogin

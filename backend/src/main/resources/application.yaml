@@ -9,3 +9,8 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: update
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
