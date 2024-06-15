@@ -2,65 +2,47 @@ version: "3.9"
 
 services:
 
-#  cache:
-#    container_name: redis
-#    image: redis
-#    ports:
-#      - 6379:6379
-#    volumes:
-#      - /Users/ljh/study/CS-yorisa/redis/:/data
-#
-#  database:
-#    container_name: postgres
-#    image: postgres
-#    restart: always
-#    ports:
-#      - 5432:5432
-#    environment:
-#      POSTGRES_DB: test_db
-#      POSTGRES_USER: test_user
-#      POSTGRES_PASSWORD: test1234
-#    volumes:
-#      - /Users/ljh/study/CS-yorisa/pgdata/:/var/lib/postgresql/data
-#
-#  application:
-#    container_name: spring
-#    build:
-#      context: ./backend
-#      dockerfile: Dockerfile
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test_db
-#      SPRING_DATASOURCE_USERNAME: test_user
-#      SPRING_DATASOURCE_PASSWORD: test1234
-#    depends_on:
-#      - cache
-#      - database
+  cache:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - C:/Users/LJH/Coding/CS-yorisa-Project/redis/:/data
 
-#  client:
-#    container_name: react
-#    build:
-#      context: ./frontend
-#      dockerfile: Dockerfile
-#    volumes:
-#      - /app/node_modules
-#      - ./frontend:/app
-#    stdin_open: true
-#    networks:
-#      - frontend
+  database:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test1234
+    volumes:
+      - C:/Users/LJH/Coding/CS-yorisa-Project/pgdata/:/var/lib/postgresql/data
+
+  application:
+    container_name: spring
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test_db
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test1234
+    ports:
+      - 8080:8080
+    depends_on:
+      - cache
+      - database
 
   nginx:
     container_name: nginx-frontend
-#    image: nginx:latest
     restart: always
     build:
-#      context: ./nginx
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 80:80
-#    networks:
-#      - frontend
-
-#networks:
-#  frontend:
-#    driver: bridge
+      - 3000:80

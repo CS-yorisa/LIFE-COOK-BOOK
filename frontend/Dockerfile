@@ -8,14 +8,12 @@ RUN pnpm install
 
 COPY . .
 RUN pnpm run build
-#EXPOSE 5173
-#CMD ["pnpm", "run", "dev"]
 
 FROM nginx:latest
-RUN rm /etc/nginx/conf.d/default.conf
-RUN rm -rf /etc/nginx/conf.d/*
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=builder app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
