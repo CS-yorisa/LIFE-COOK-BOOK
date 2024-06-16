@@ -49,6 +49,7 @@ dependencies {
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 }
 
 tasks.withType<KotlinCompile> {

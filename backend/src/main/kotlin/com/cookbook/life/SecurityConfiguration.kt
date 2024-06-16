@@ -1,5 +1,6 @@
 package com.cookbook.life
 
+import com.cookbook.life.app.utility.EndPoint
 import com.fasterxml.jackson.databind.ObjectMapper
 import lombok.RequiredArgsConstructor
 import org.springframework.context.annotation.Bean
@@ -55,9 +56,11 @@ class SecurityConfig {
             .formLogin { obj: FormLoginConfigurer<HttpSecurity> -> obj.disable() }
             .authorizeHttpRequests(Customizer { authorize ->
                 authorize
-                    .requestMatchers("/", "/member/*").permitAll()
+                    .requestMatchers("/*", "/member/*").permitAll()
                     .anyRequest().authenticated()
-            }) // 폼 로그인은 현재 사용하지 않음
+            })
+            // .requestMatchers(EndPoint.AUTH_ROOT_PATH, EndPoint.SIGN_UP, EndPoint.SIGN_IN).permitAll()
+            // 폼 로그인은 현재 사용하지 않음
             //				.formLogin(formLogin -> formLogin
             //						.loginPage("/login")
             //						.defaultSuccessUrl("/home"))
