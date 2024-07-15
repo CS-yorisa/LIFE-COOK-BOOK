@@ -8,7 +8,8 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - C:/Users/LJH/Coding/study/CS-yorisa-Project/redis/:/data
+      - redis:/data
+#      - C:/Users/LJH/Coding/study/CS-yorisa-Project/redis/:/data
 
   database:
     container_name: postgres
@@ -21,7 +22,8 @@ services:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test1234
     volumes:
-      - C:/Users/LJH/Coding/study/CS-yorisa-Project/pgdata/:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+#      - C:/Users/LJH/Coding/study/CS-yorisa-Project/pgdata/:/var/lib/postgresql/data
       - ./postgres-init/:/docker-entrypoint-initdb.d/
 
   server:
