@@ -8,7 +8,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - C:/Users/LJH/Coding/CS-yorisa-Project/redis/:/data
+      - C:/Users/LJH/Coding/study/CS-yorisa-Project/redis/:/data
 
   database:
     container_name: postgres
@@ -21,28 +21,31 @@ services:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test1234
     volumes:
-      - C:/Users/LJH/Coding/CS-yorisa-Project/pgdata/:/var/lib/postgresql/data
+      - C:/Users/LJH/Coding/study/CS-yorisa-Project/pgdata/:/var/lib/postgresql/data
+      - ./postgres-init/:/docker-entrypoint-initdb.d/
 
-  application:
+  server:
     container_name: spring
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ljh0728/life-cook-book-server:1.0
+#    build:
+#      context: ./backend
+#      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test_db
       SPRING_DATASOURCE_USERNAME: test_user
       SPRING_DATASOURCE_PASSWORD: test1234
-    ports:
-      - 8080:8080
     depends_on:
       - cache
       - database
 
-  nginx:
-    container_name: nginx-frontend
+  client:
+    container_name: nginx-react
     restart: always
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ljh0728/life-cook-book-client:1.0
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
     ports:
       - 3000:80
