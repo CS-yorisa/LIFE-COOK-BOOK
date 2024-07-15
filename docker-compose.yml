@@ -51,3 +51,9 @@ services:
 #      dockerfile: Dockerfile
     ports:
       - 3000:80
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
