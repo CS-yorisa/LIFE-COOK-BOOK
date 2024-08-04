@@ -4,6 +4,8 @@ import com.cookbook.life.app.utility.EndPoint
 import com.cookbook.life.model.member.User
 import com.cookbook.life.service.member.UserService
 import com.cookbook.life.dto.member.SignUpDto
+import com.cookbook.life.dto.member.SingInDTO
+import com.cookbook.life.dto.member.Token
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -40,4 +42,10 @@ class MemberController(private val userService: UserService) {
 ////        return userService.getUserById(id)
 ////        return userService.getUserById("zxcvzxcvzxcvzxcvxzcv")
 //    }
+
+    @PostMapping(EndPoint.SIGN_IN)
+    fun singIn(@RequestBody singInDTO: SingInDTO): ResponseEntity<Token> {
+        val token = userService.singIn(singInDTO)
+        return ResponseEntity.ok(token)
+    }
 }
