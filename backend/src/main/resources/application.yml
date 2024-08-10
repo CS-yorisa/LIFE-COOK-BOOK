@@ -1,12 +1,4 @@
 
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/test_db
-    username: test_user
-    password: "test1234"
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    show-sql: true
-    database: postgresql
-    hibernate:
-      ddl-auto: update
+  profiles:
+    include: database
