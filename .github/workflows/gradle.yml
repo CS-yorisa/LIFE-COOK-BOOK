@@ -47,7 +47,9 @@ jobs:
         run: chmod +x ./backend/gradlew
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: |
+          cd ./backend
+          ./gradlew clean build -x test --stacktrace
 
       # docker hub 로그인 후 image build & push
       - name: Docker SpringBoot build & push
