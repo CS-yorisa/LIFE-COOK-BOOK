@@ -29,14 +29,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # application.yml 파일 생성
-      - name: make application.yml
-        run: |
-          cd ./backend/src/main/resources
-          touch ./application-database.yml
-          echo "${{ secrets.DATABASE }}" > ./application-database.yml
-        shell: bash
-
       # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
@@ -50,6 +42,32 @@ jobs:
         run: |
           cd ./backend
           ./gradlew clean build -x test --stacktrace
+        env:
+          DB_ENDPOINT: ${{ secrets.DB_ENDPOINT }}
+          DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+#          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+
+      - name: Create env file
+        run: |
+          echo DB_ENDPOINT=${{ secrets.DB_ENDPOINT }} >> .env
+          echo DB_SCHEMA=${{ secrets.DB_SCHEMA }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+#          echo JWT_TOKEN=${{ secrets.JWT_TOKEN }} >> .env
+
+      - name: Copy configuration & env files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: |
+            ./docker-compose.yml
+            ./frontend/nginx/nginx.conf
+            ./github/workspace/.env
+          target: /home/ec2-user/
 
       # docker hub 로그인 후 image build & push
       - name: Docker SpringBoot build & push
