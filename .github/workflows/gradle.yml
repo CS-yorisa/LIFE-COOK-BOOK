@@ -66,7 +66,7 @@ jobs:
           source: |
             ./docker-compose.yml
             ./frontend/nginx/nginx.conf
-            ./.env
+#            ./.env
           target: /home/ec2-user/
 
       - name: Set Docker tag
