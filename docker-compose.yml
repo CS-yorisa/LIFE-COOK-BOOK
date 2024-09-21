@@ -34,7 +34,7 @@ services:
     restart: always
     image: ljh0728/life-cook-book-client:latest
     ports:
-      - 3000:80
+      - 80:80
 
 volumes:
   redis-data:
