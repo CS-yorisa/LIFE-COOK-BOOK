@@ -119,5 +119,5 @@ jobs:
             sudo docker rm -f $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker pull "${{ secrets.DOCKER_USERNAME }}"/life-cook-book-server:latest
             sudo docker pull "${{ secrets.DOCKER_USERNAME }}"/life-cook-book-client:latest
-            sudo docker-compose up -d --force-recreate
+            sudo docker-compose up -d --force-recreate --remove-orphans
             sudo docker image prune -a -f
