@@ -37,7 +37,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./frontend/nginx/conf.d:/etc/nginx/conf.d
+      - ./frontend/nginx:/etc/nginx
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
