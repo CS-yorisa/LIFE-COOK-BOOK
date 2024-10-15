@@ -2,35 +2,6 @@ version: "3.9"
 
 services:
 
-  cache:
-    container_name: redis
-    image: redis
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-data:/data
-
-  database:
-    container_name: postgres
-    image: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./postgres-init/:/docker-entrypoint-initdb.d/
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-
-  server:
-    container_name: spring
-    image: ljh0728/life-cook-book-server:latest
-    ports:
-      - 8080:8080
-    depends_on:
-      - cache
-      - database
-
   client:
     container_name: nginx-react
     restart: always
@@ -52,9 +23,3 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
-volumes:
-  redis-data:
-    driver: local
-  postgres-data:
-    driver: local
