@@ -1,8 +1,8 @@
 package com.cookbook.life.dto.member
 
-data class SingInDTO (
+data class SingInDTO(
     var email: String,
-    var password: String
+    var passWord: String
 )
 //    @field:NotBlank
 //    @JsonProperty("loginId")
