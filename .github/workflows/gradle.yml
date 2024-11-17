@@ -55,6 +55,7 @@ jobs:
           echo DB_SCHEMA=${{ secrets.DB_SCHEMA }} >> .env
           echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo ENVIRONMENT=${{ secrets.ENVIRONMENT }} >> .env
 #          echo JWT_TOKEN=${{ secrets.JWT_TOKEN }} >> .env
 
       - name: Copy docker-compose.yml to EC2
