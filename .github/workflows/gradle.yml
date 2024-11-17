@@ -81,8 +81,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "./frontend/nginx/nginx.conf"
-          target: "/home/ec2-user/frontend/nginx/"
+          source: "./frontend/nginx/"
+          target: "/home/ec2-user/"
 
       - name: Set Docker tag
         id: docker_tag
