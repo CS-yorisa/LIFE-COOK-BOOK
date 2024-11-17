@@ -58,6 +58,12 @@ jobs:
           echo ENVIRONMENT=${{ secrets.ENVIRONMENT }} >> .env
 #          echo JWT_TOKEN=${{ secrets.JWT_TOKEN }} >> .env
 
+      - name: Check file existence
+        run: |
+          ls -al ./docker-compose.yml
+          ls -al ./frontend/nginx/nginx.conf
+          ls -al ./.env
+
       - name: Copy configuration & env files to EC2
         uses: appleboy/scp-action@master
         with:
