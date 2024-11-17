@@ -47,6 +47,7 @@ jobs:
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
 #          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
 
       - name: Create env file
