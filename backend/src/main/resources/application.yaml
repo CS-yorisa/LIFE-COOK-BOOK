@@ -4,12 +4,13 @@ spring:
     username: root
     password: root
     driver-class-name: org.postgresql.Driver
+  #    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     database: postgresql
     hibernate:
       ddl-auto: update
   jwt:
-    secret-key : SECRET_KEY
-    access-token-expire-time : 600
-    refresh-token-expire-time : 86400
+    secret-key: SECRET_KEY
+    access-token-expire-time: 600
+    refresh-token-expire-time: 86400

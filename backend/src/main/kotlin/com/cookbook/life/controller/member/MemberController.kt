@@ -19,23 +19,13 @@ class MemberController(private val userService: UserService) {
 
     @PostMapping(EndPoint.SIGN_UP)
     fun signUp(@RequestBody singUpDto: SignUpDto): ResponseEntity<User> {
-//        println("MemberController.signUp")
-//        return userService.createUser(singUpDto)
         try {
             val user = userService.singUp(singUpDto)
             return ResponseEntity.ok(user)
-//            return userService.singUp(singUpDto)
         } catch (e: Exception) {
             return ResponseEntity.status(400).body(null)
         }
     }
-
-//    @GetMapping("/{id}")
-//    fun getUserById(@PathVariable id: UUID)  {
-//        return
-////        return userService.getUserById(id)
-////        return userService.getUserById("zxcvzxcvzxcvzxcvxzcv")
-//    }
 
     @PostMapping(EndPoint.SIGN_IN)
     fun singIn(@RequestBody singInDTO: SingInDTO): ResponseEntity<Token> {
