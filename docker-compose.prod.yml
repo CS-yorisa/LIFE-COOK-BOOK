@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+
+  server:
+    container_name: spring
+    image: ljh0728/life-cook-book-server:latest
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
