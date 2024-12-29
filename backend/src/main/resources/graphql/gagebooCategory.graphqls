@@ -1,0 +1,23 @@
+
+type GagebooCategory {
+    categoryNo : Int,
+    userId : UUID,
+    mainCategory: String,
+    categoryName : String
+}
+
+input GagebooCategoryInput{
+    userId : UUID,
+    mainCategory: String,
+    categoryName : String
+}
+
+extend type Query {
+    getGagebooCategoryById(userId: UUID): [GagebooCategory]
+}
+
+extend type Mutation {
+    makeBasicCategory(userId:UUID): Int
+    saveGagebooCategory(gagebooCategory: GagebooCategoryInput): GagebooCategory
+    deleteGagebooCategory(userId:UUID, categoryNo:Int): Boolean
+}

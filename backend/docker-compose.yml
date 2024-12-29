@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test1234
+      volumes:
+        -
+  application:
+    container_name: spring
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/lifecookbook
+      SPRING_DATASOURCE_USERNAME: local
+      SPRING_DATASOURCE_PASSWORD: postgresql
+    depends_on:
+      - database

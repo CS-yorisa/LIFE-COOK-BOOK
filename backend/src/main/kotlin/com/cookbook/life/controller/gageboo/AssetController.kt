@@ -1,4 +1,4 @@
-package com.cookbook.life.controller.gageboo.asset
+package com.cookbook.life.controller.gageboo
 
 import com.cookbook.life.model.gageboo.asset.AssetCategory
 import com.cookbook.life.model.gageboo.asset.UserAsset
@@ -26,8 +26,15 @@ class AssetController(private var assetService: AssetService) {
 
     // 유저의 자산 목록 조회
     @QueryMapping
-    fun selectUserAsset(@Argument("userId") userId: UUID): List<UserAsset>{
-        return assetService.selectUserAsset(userId)
+    fun getUserAssetList(@Argument("userId") userId: UUID): List<UserAsset> {
+        return assetService.getUserAssetList(userId)
+    }
+
+
+    // 유저 자산 수정
+    @MutationMapping
+    fun updateUserAsset(@Argument("userAsset") userAsset: UserAsset): UserAsset {
+        return assetService.updateUserAsset(userAsset)
     }
 
     // 유저 자산 단건 삭제
@@ -36,13 +43,9 @@ class AssetController(private var assetService: AssetService) {
         return assetService.deleteUserAsset(userId, no)
     }
 
-    // 다건 삭제도 추가 필요한가?
-
     // 유저 자산 전체 삭제 (회원 탈퇴)
     @MutationMapping
     fun deleteAllUserAsset(@Argument("userId") userId:UUID):Boolean{
         return assetService.deleteAllUserAsset(userId)
     }
-
-    // 수정 범위 확인 필요
 }

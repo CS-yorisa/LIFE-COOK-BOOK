@@ -9,7 +9,7 @@ import java.util.*
 @Entity
 @Table(schema = "gageboo")
 @IdClass(UserGoalId::class)
-class UserGoal (
+class UserExpenseGoal (
     @Id var userId: UUID,
     @Id var goalNo: Int?,
     var period: String, //YYYYMM

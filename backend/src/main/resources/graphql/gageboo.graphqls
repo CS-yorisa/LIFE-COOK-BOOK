@@ -3,45 +3,46 @@ scalar Long
 scalar LocalTime
 
 type Gageboo {
-    no : Int
-    id : UUID
-    category : String
-    asset: String
+    gagebooNo : Int
+    userId : UUID
+    categoryNo : Int
+    assetNo: Int
     date: String
-    name: String
-    expence: String
+    content: String
+    amounts: BigDecimal
     star : Int
     expenceInclude: Boolean
 }
 
 input GagebooInput {
-    id : UUID!
-    category: String
-    asset: String
+    userId : UUID!
+    categoryNo: Int
+    assetNo: Int
     date: String
-    name: String
-    expence: String
+    content: String
+    amounts: BigDecimal
     star : Int
     expenceInclude: Boolean
 }
 
 input GagebooUpdate {
-    no : Int!
-    id : UUID
-    category: String
-    asset: String
+    gagebooNo : Int!
+    userId : UUID
+    categoryNo: Int
+    assetNo: Int
     date: String
-    name: String
-    expence: String
+    content: String
+    amounts: BigDecimal
     star : Int
     expenceInclude: Boolean
 }
 
 type Query {
-    getGagebooById(id: UUID): [Gageboo]
+    getGagebooById(userId: UUID, mainCategory: String): [Gageboo]
 }
 
 type Mutation{
     saveGageboo(gageboo: GagebooInput): Gageboo
     updateGageboo(gageboo: GagebooUpdate): Gageboo
+    deleteGageboo(gagebooNo: Int, userId:UUID): Int
 }

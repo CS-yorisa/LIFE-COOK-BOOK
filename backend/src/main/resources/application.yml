@@ -9,14 +9,14 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
-    username: jieun
+    username: postgres
     password: postgresql
   jpa:
     hibernate:
       # create는 테이블이 있으면 drop치고 다시 만듦, create-drop은 create랑 동일하지만 애플리케이션이 종료될때 테이블 삭제
       # update는 매핑되는 테이블 없으면 만들고 있으면 쓰긴한데 엔티티 보면서 지가 테이블 컬럼 수정 (다 수정되는 것도 아님)
       # validatie 는 엔티티와 테이블이 정상적으로 매핑되는지만 검사. 테이블이 아예 존재하지 않거나 컬럼이 없으면 예외 발생시키며 종료
-      ddl-auto: none # 위의 4가지 경우를 제외한 모든 경우. 스프링부트는 none이라고 명시하거나 아예 속성명시X
+      ddl-auto: update # 위의 4가지 경우를 제외한 모든 경우. 스프링부트는 none이라고 명시하거나 아예 속성명시X
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

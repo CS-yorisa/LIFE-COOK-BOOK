@@ -19,7 +19,10 @@ class GraphQlConfig {
                 .scalar(ExtendedScalars.LocalTime)
                 .scalar(ExtendedScalars.GraphQLLong)
                 .scalar(ExtendedScalars.DateTime)
-                .scalar(ExtendedScalars.Date)}
+                .scalar(ExtendedScalars.Date)
+                .scalar(ExtendedScalars.PositiveFloat)
+                .scalar(ExtendedScalars.GraphQLBigDecimal)
+        }
 
     }
 }

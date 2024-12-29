@@ -1,4 +1,4 @@
-package com.cookbook.life.model.gageboo
+package com.cookbook.life.model.gageboo.gageboo
 
 import jakarta.persistence.Column
 import jakarta.persistence.GeneratedValue

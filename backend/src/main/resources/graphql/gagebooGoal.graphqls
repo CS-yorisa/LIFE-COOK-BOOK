@@ -1,0 +1,28 @@
+type UserExpenseGoal{
+    userId: UUID,
+    goalNo: Int,
+    period: String,
+    goalAmount: Long,
+}
+
+input UserExpenseGoalInput {
+    userId: UUID,
+    period: String,
+    goalAmount: Long,
+}
+
+input UserExpenseGoalUpdate {
+    userId: UUID,
+    goalNo: Int,
+    goalAmount: Long,
+}
+
+extend type Query{
+    getUserExpenseGoal(userId: UUID, period: String): UserExpenseGoal
+    getUserExpense(userId: UUID, period: String): BigDecimal
+}
+
+extend type Mutation {
+    saveUserExpenseGoal(userGoal: UserExpenseGoalInput): UserExpenseGoal
+    updateUserExpenseGoal(userGoal: UserExpenseGoalUpdate): UserExpenseGoal
+}

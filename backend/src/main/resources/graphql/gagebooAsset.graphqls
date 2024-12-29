@@ -1,0 +1,55 @@
+scalar Float
+scalar BigDecimal
+
+type AssetCategory{
+    assetCategoryNo: Int,
+    categoryType: String,
+    categoryName: String,
+}
+
+input UserAssetInput{
+    userId: UUID!, # 유저ID
+    assetCategoryNo: Int!, # 자산카테고리 번호
+    assetName: String!, # 자산이름
+    assetAmount: BigDecimal, # 자산 총액
+    withdrawalAssetNo: Int,
+    memo: String,
+    interestRate: Float,
+    isExcludeGoal: Boolean,
+}
+
+input UserAssetUpdateInput{
+    userId: UUID!,
+    assetNo: Int!,
+    assetCategoryNo: Int,
+    assetName: String,
+    assetAmount: BigDecimal,
+    withdrawalAssetNo: Int,
+    memo: String,
+    interestRate: Float,
+    isExcludeGoal: Boolean,
+}
+
+type UserAsset{
+    userId: UUID!,
+    assetNo: Int,
+    assetCategoryNo: Int,
+    assetName: String,
+    assetAmount: BigDecimal,
+    withdrawalAssetNo: Int,
+    memo: String,
+    interestRate: Float,
+    isExcludeGoal: Boolean,
+}
+
+extend type Query {
+    getAssetCommonCategoryList: [AssetCategory]
+    getUserAssetList(userId: UUID): [UserAsset]
+}
+
+extend type Mutation {
+    insertUserAsset(userAsset: UserAssetInput): Boolean
+    updateUserAsset(userAsset: UserAssetInput): UserAsset
+    deleteUserAsset(userId:UUID, no: Int):Boolean
+    deleteAllUserAsset(userId:UUID):Boolean
+}
