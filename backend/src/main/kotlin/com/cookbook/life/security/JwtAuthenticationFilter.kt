@@ -14,55 +14,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
-//class JwtAuthenticationFilter(
-//    private val jwtTokenProvider: JWT
-//) : OncePerRequestFilter() {
-//    override fun doFilter(
-//        request: ServletRequest,
-//        response: ServletResponse,
-//        chain: FilterChain,
-//    ) {
-////        val token = resolveToken(request as HttpServletRequest)
-////
-////        if (token != null && jwtTokenProvider.validateToken(token)) {
-////            val authentication = jwtTokenProvider.getAuthentication(token)
-////            SecurityContextHolder.getContext().authentication = authentication
-////        }
-//
-//        try {
-//            val token = parseBearerToken(request)
-//            val user = parseUserSpecification(token)
-//            UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
-//                .apply { details = WebAuthenticationDetails(request) }
-//                .also { SecurityContextHolder.getContext().authentication = it }
-//        } catch (e: Exception) {
-//            request.setAttribute("exception", e)
-//        }
-//
-//        chain.doFilter(request, response)
-//    }
-//
-//    private fun parseBearerToken(request: ServletRequest) = request.getHeader(HttpHeaders.AUTHORIZATION)
-//        .takeIf { it?.startsWith("Bearer ", true) ?: false }?.substring(7)
-//
-//    private fun parseUserSpecification(token: String?) = (
-//            token?.takeIf { it.length >= 10 }
-//                ?.let { jwtTokenProvider.validateTokenAndGetSubject(it) }
-//                ?: "anonymous:anonymous"
-//            ).split(":")
-//        .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
-//
-//    private fun resolveToken(request: HttpServletRequest): String? {
-//        val bearerToken = request.getHeader("Authorization")
-//
-//        return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-//            bearerToken.substring(7)
-//        } else {
-//            null
-//        }
-//    }
-//}
-
 @Order(0)
 @Component
 class JwtAuthenticationFilter(private val tokenProvider: JWT) : OncePerRequestFilter() {
@@ -90,7 +41,8 @@ class JwtAuthenticationFilter(private val tokenProvider: JWT) : OncePerRequestFi
     private fun parseUserSpecification(token: String?) = (
             token?.takeIf { it.length >= 10 }
                 ?.let { tokenProvider.validateTokenAndGetSubject(it) }
-                ?: "anonymous:anonymous"
+//                ?: "anonymous:anonymous"
+                ?: ""
             ).split(":")
         .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
 }

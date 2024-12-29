@@ -7,6 +7,7 @@ import com.cookbook.life.dto.member.Token
 import com.cookbook.life.model.member.User
 import com.cookbook.life.service.member.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -36,5 +37,11 @@ class MemberController(private val userService: UserService) {
     @GetMapping(EndPoint.VERIFY_TOKEN)
     fun verifyToken(@RequestBody token: String): ResponseEntity<Boolean> {
         return ResponseEntity.ok(userService.verifyToken(token))
+    }
+
+    @GetMapping("/test")
+    fun testAPI(@AuthenticationPrincipal member: org.springframework.security.core.userdetails.User): String {
+        println(member)
+        return "test"
     }
 }

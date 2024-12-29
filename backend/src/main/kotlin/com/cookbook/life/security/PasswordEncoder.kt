@@ -1,11 +1,10 @@
 package com.cookbook.life.security
 
-import org.springframework.security.crypto.password.PasswordEncoder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
-class passwordEncoder {
+class PasswordEncoder {
     fun encode(rawPassword: CharSequence): String {
         return hashedSha512(rawPassword.toString())
     }

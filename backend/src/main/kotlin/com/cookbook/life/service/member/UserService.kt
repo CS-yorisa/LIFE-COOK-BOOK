@@ -6,7 +6,6 @@ import com.cookbook.life.dto.member.Token
 import com.cookbook.life.model.member.User
 import com.cookbook.life.repository.member.UserRepository
 import jakarta.persistence.EntityNotFoundException
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,7 +16,6 @@ class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwt: JWT,
-    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
 ) : UserDetailsService {
 
     fun singUp(singUpDtd: SignUpDto): User {
@@ -38,16 +36,7 @@ class UserService(
             .takeIf { passwordEncoder.matches(singInDTO.passWord, it.password) }
             ?: throw IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.")
 
-//        if (!passwordEncoder.matches(singInDTO.passWord, user.passWord)) {
-//            throw IllegalArgumentException("Password is incorrect")
-//        }
-
-//        val authenticationToken = UsernamePasswordAuthenticationToken(singInDTO.email, singInDTO.passWord)
-//        val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
-//        val token = jwt.createTokenData(user, authentication)
-
         val token = jwt.createTokenData(user)
-
         return token
     }
 
@@ -62,10 +51,6 @@ class UserService(
     fun createUser(user: User): User {
         return userRepository.save(user)
     }
-
-//    fun getUserById(id: UUID): User {
-//        return userRepository.findById(id) ?: throw IllegalArgumentException("User not found")
-//    }
 
     fun getUserByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw IllegalArgumentException("User not found")

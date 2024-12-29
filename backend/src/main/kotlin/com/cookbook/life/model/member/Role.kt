@@ -10,7 +10,7 @@ class Role(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     @Enumerated(EnumType.STRING)
-    var roleName: RoleName
+    var roleName: MemberType
 ) : GrantedAuthority {
     override fun getAuthority() = roleName.name
 }
