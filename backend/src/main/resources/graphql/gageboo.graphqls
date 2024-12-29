@@ -15,6 +15,18 @@ type Gageboo {
 }
 
 input GagebooInput {
+    id : UUID!
+    category: String
+    asset: String
+    date: String
+    name: String
+    expence: String
+    star : Int
+    expenceInclude: Boolean
+}
+
+input GagebooUpdate {
+    no : Int!
     id : UUID
     category: String
     asset: String
@@ -31,4 +43,5 @@ type Query {
 
 type Mutation{
     saveGageboo(gageboo: GagebooInput): Gageboo
+    updateGageboo(gageboo: GagebooUpdate): Gageboo
 }
