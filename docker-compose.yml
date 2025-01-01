@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+
+  client:
+    container_name: nginx-react
+    restart: always
+    image: ljh0728/life-cook-book-client:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/nginx/nginx.local.conf:/etc/nginx/nginx.local.conf
+      - ./frontend/nginx/nginx.prod.conf:/etc/nginx/nginx.prod.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: >
+      /bin/sh -c "cp /etc/nginx/nginx.${ENVIRONMENT}.conf /etc/nginx/nginx.conf &&
+      while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
