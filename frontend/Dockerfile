@@ -2,7 +2,7 @@ FROM node:21.7.1 AS builder
 
 
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 RUN npm install -g pnpm
 RUN pnpm install
 
