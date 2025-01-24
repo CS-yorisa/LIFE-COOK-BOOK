@@ -6,16 +6,24 @@ import lombok.NonNull
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
-//import org.springframework.security.core.GrantedAuthority
-//import java.security.Permission
-
 @Entity(name = "users")
 @Table(name = "users")
-data class User(
+class User(
     @Id
     @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID = UUID.randomUUID(),
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_friends",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "friend_id", referencedColumnName = "id")]
+    )
+    val friends: MutableSet<User> = mutableSetOf(),
+//    val firends: MutableList<User> = mutableListOf(),
+//    val friends: List<User> = emptyList(),
+
     @Column(unique = true, nullable = false)
     val email: String,
     @JsonIgnore

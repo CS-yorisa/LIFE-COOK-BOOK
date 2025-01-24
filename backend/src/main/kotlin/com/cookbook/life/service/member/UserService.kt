@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 
 @Service
@@ -54,5 +56,17 @@ class UserService(
 
     fun getUserByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw IllegalArgumentException("User not found")
+    }
+
+    @Transactional
+    fun addFriend(userId: UUID, friendId: UUID) {
+        val user = userRepository.findById(userId) ?: throw IllegalArgumentException("User not found")
+        val friend = userRepository.findById(friendId) ?: throw IllegalArgumentException("Friend not found")
+
+        user.friends.add(friend)
+        friend.friends.add(user)
+
+        userRepository.save(user)
+        userRepository.save(friend)
     }
 }
