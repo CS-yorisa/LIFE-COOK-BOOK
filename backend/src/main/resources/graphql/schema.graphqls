@@ -1,0 +1,25 @@
+type User {
+    id: ID!
+    nickname: String!
+    email: String!
+}
+
+type Group {
+    groupId: ID!
+    groupName: String!
+    limitPerson: Int!
+    groupPassword: String
+}
+
+type Query {
+    getGroups: [Group!]!
+    getGroup(groupId: ID!): Group
+    getUsersByGroup(groupId: ID!): [User!]!
+}
+
+type Mutation {
+    createGroup(groupName: String!, limitPerson: Int!, groupPassword: String): Group!
+    updateGroup(groupId: ID!, groupName: String, limitPerson: Int, groupPassword: String): Group!
+    joinGroup(groupId: ID!, userId: ID!): String!
+    leaveGroup(groupId: ID!, userId: ID!): String!
+}
