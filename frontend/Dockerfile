@@ -2,7 +2,7 @@ FROM node:21.7.1 AS builder
 
 
 WORKDIR /app
-COPY package.json ./
+COPY package.json pnpm-lock.yaml svelte.config.js ./
 RUN npm install -g pnpm
 RUN pnpm install
 
@@ -10,7 +10,8 @@ COPY . .
 RUN pnpm run build
 
 FROM nginx:latest
-COPY --from=builder /app/dist /usr/share/nginx/html
+
+COPY --from=builder /app/build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
