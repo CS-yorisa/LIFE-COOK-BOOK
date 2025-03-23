@@ -3,8 +3,7 @@ version: "3.9"
 services:
 
   client:
-    container_name: nginx-react
-    restart: always
+    container_name: nginx-svelte
     build:
       context: ./frontend
       dockerfile: Dockerfile
