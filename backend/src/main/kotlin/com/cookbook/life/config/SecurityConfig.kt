@@ -14,7 +14,7 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf{obj : CsrfConfigurer<HttpSecurity> -> obj.disable()}
-                .formLogin{obj: FormLoginConfigurer<HttpSecurity> -> obj.disable()}
+        .formLogin{obj: FormLoginConfigurer<HttpSecurity> -> obj.disable()}
         return http.build()
     }
 

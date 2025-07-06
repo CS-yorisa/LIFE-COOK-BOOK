@@ -1,0 +1,51 @@
+scalar UUID
+scalar Long
+scalar LocalTime
+
+type Gageboo {
+    gagebooNo : Int
+    memberId : UUID
+    categoryType : String
+    categoryNo : Int
+    assetNo: Int
+    date: String
+    content: String
+    amounts: BigDecimal
+    star : Int
+    expenceInclude: Boolean
+}
+
+input GagebooInput {
+    memberId : UUID!
+    categoryType : String!
+    categoryNo: Int
+    assetNo: Int
+    date: String
+    content: String
+    amounts: BigDecimal
+    star : Int
+    expenceInclude: Boolean
+}
+
+input GagebooUpdate {
+    gagebooNo : Int!
+    categoryType : String!
+    memberId : UUID
+    categoryNo: Int
+    assetNo: Int
+    date: String
+    content: String
+    amounts: BigDecimal
+    star : Int
+    expenceInclude: Boolean
+}
+
+type Query {
+    getGagebooById(memberId: UUID, mainCategory: String): [Gageboo]
+}
+
+type Mutation{
+    saveGageboo(gageboo: GagebooInput): Gageboo
+    updateGageboo(gageboo: GagebooUpdate): Gageboo
+    deleteGageboo(gagebooNo: Int, memberId:UUID): Int
+}
