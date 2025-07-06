@@ -1,25 +1,25 @@
 type UserExpenseGoal{
-    userId: UUID,
+    memberId: UUID,
     goalNo: Int,
     period: String,
     goalAmount: Long,
 }
 
 input UserExpenseGoalInput {
-    userId: UUID,
+    memberId: UUID,
     period: String,
     goalAmount: Long,
 }
 
 input UserExpenseGoalUpdate {
-    userId: UUID,
+    memberId: UUID,
     goalNo: Int,
     goalAmount: Long,
 }
 
 extend type Query{
-    getUserExpenseGoal(userId: UUID, period: String): UserExpenseGoal
-    getUserExpense(userId: UUID, period: String): BigDecimal
+    getUserExpenseGoal(memberId: UUID, period: String): UserExpenseGoal
+    getUserExpense(memberId: UUID, period: String): BigDecimal
 }
 
 extend type Mutation {

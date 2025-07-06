@@ -10,7 +10,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: postgresql
+    password: pw_postgres
   jpa:
     hibernate:
       # create는 테이블이 있으면 drop치고 다시 만듦, create-drop은 create랑 동일하지만 애플리케이션이 종료될때 테이블 삭제

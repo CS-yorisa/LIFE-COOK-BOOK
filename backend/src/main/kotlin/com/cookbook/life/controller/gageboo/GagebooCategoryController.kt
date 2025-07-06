@@ -2,6 +2,7 @@ package com.cookbook.life.controller.gageboo
 
 import com.cookbook.life.model.gageboo.gageboo.GagebooCategory
 import com.cookbook.life.service.gageboo.GagebooCategoryService
+import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -15,19 +16,19 @@ import java.util.UUID
 class GagebooCategoryController(private var gagebooCategoryService: GagebooCategoryService) {
     // 회원가입 시 기본 카테고리 생성
     @MutationMapping
-    fun makeBasicCategory(@Argument("userId") userId: UUID): Int{
-        return gagebooCategoryService.makeBasicCategory(userId)
+    fun makeBasicCategory(@Argument("memberId") memberId: UUID): Int{
+        return gagebooCategoryService.makeBasicCategory(memberId)
     }
 
     // 카테고리 조회
     @QueryMapping
-    fun getGagebooCategoryById(@Argument("userId") userId: UUID): List<GagebooCategory> {
-        return gagebooCategoryService.getGagebooCategoryById(userId);
+    fun getGagebooCategoryById(@Argument("memberId") memberId: UUID): List<GagebooCategory> {
+        return gagebooCategoryService.getGagebooCategoryById(memberId);
     }
 
     // 신규 카테고리 추가
     @MutationMapping
-    fun saveGagebooCategory(@Argument("gagebooCategory") gagebooCategory: GagebooCategory) : GagebooCategory {
+    fun saveGagebooCategory(@Valid @Argument("gagebooCategory") gagebooCategory: GagebooCategory) : GagebooCategory {
         return gagebooCategoryService.saveGagebooCategory(gagebooCategory)
     }
 
@@ -43,7 +44,7 @@ class GagebooCategoryController(private var gagebooCategoryService: GagebooCateg
         유저 카테고리 삭제
      */
     @MutationMapping
-    fun deleteGagebooCategory(@Argument("userId") userId: UUID, @Argument("categoryNo") categoryNo: Int):Boolean{
-        return gagebooCategoryService.deleteGagebooCategory(userId, categoryNo)
+    fun deleteGagebooCategory(@Argument("memberId") memberId: UUID, @Argument("categoryNo") categoryNo: Int):Boolean{
+        return gagebooCategoryService.deleteGagebooCategory(memberId, categoryNo)
     }
 }

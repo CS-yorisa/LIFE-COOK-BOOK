@@ -1,6 +1,7 @@
 package com.cookbook.life.model.gageboo.asset
 
 import com.cookbook.life.model.gageboo.enum.AssetCategoryType
+import com.cookbook.life.validation.ValidEnum
 import jakarta.persistence.*
 import lombok.Getter
 
@@ -15,6 +16,7 @@ class AssetCategory (
     /* 카테고리 타입 */
     // @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
+    @ValidEnum(enumClass = AssetCategoryType::class)
     var categoryType: AssetCategoryType,
 
     /* 카테고리명 */

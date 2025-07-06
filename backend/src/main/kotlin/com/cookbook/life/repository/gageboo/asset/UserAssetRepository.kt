@@ -10,13 +10,13 @@ import java.util.UUID
 @Repository
 interface UserAssetRepository : JpaRepository<UserAsset, Int>, KotlinJdslJpqlExecutor {
 
-    fun findAllByUserId(id: UUID):List<UserAsset>
+    fun findAllByMemberId(id: UUID):List<UserAsset>
 
     @Transactional
-    fun deleteUserAssetByUserId(id: UUID)
+    fun deleteUserAssetByMemberId(id: UUID)
 
     @Transactional
-    fun deleteUserAssetByUserIdAndAssetNo(id: UUID, no:Int)
+    fun deleteUserAssetByMemberIdAndAssetNo(id: UUID, no:Int)
 
-    fun findByUserIdAndAssetNo(id: UUID, assetNo: Int): UserAsset
+    fun findByMemberIdAndAssetNo(id: UUID, assetNo: Int): UserAsset
 }

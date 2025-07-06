@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Service
-class UserGoalService {
+class MemberGoalService {
 
     @Autowired
     private lateinit var userExpenseGoalRepository: UserExpenseGoalRepository
@@ -20,7 +20,7 @@ class UserGoalService {
     private lateinit var gagebooQdls: GagebooQdls
 
     // 유저 목표 조회 (특정 월)
-    fun getUserExpenseGoal(userId: UUID, period: String?): UserExpenseGoal {
+    fun getUserExpenseGoal(memberId: UUID, period: String?): UserExpenseGoal {
         var yearMonth: String
 
         // 입력된 값이 없는 경우
@@ -31,11 +31,11 @@ class UserGoalService {
             yearMonth = period
         }
 
-        return userExpenseGoalRepository.findUserGoalByUserIdAndPeriod(userId, yearMonth)
+        return userExpenseGoalRepository.findUserGoalByMemberIdAndPeriod(memberId, yearMonth)
     }
 
     // 유저 지출 액수 조회
-    fun getUserExpense(userId: UUID, period: String?): BigDecimal{
+    fun getUserExpense(memberId: UUID, period: String?): BigDecimal{
         var yearMonth: String
 
         // 입력된 값이 없는 경우
@@ -46,7 +46,7 @@ class UserGoalService {
             yearMonth = period
         }
 
-        return gagebooQdls.selectGagebooExpenseSum(userId, yearMonth)
+        return gagebooQdls.selectGagebooExpenseSum(memberId, yearMonth)
     }
 
     // 유저 목표 저장

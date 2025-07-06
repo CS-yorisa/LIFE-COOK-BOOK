@@ -8,5 +8,5 @@ import java.util.*
 
 @Repository
 interface UserExpenseGoalRepository : JpaRepository<UserExpenseGoal, Int>, KotlinJdslJpqlExecutor {
-    fun findUserGoalByUserIdAndPeriod(userId: UUID, period: String):UserExpenseGoal;
+    fun findUserGoalByMemberIdAndPeriod(memberId: UUID, period: String):UserExpenseGoal;
 }

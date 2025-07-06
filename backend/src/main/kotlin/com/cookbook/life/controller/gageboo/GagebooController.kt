@@ -1,9 +1,9 @@
 package com.cookbook.life.controller.gageboo
 
 import com.cookbook.life.model.gageboo.gageboo.Gageboo
-import com.cookbook.life.model.gageboo.MainCategory
+import com.cookbook.life.model.gageboo.gageboo.MainCategory
 import com.cookbook.life.service.gageboo.GagebooService
-import lombok.RequiredArgsConstructor
+import jakarta.validation.Valid
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -15,13 +15,13 @@ class GagebooController (private var gagebooService: GagebooService) {
 
     // 회원 가계부 조회
     @QueryMapping
-    fun getGagebooById(@Argument("userId") userId: UUID, @Argument("mainCategory") mainCategory: MainCategory? = null): List<Gageboo>{
-        return gagebooService.getGagebooById(userId, mainCategory)
+    fun getGagebooById(@Argument("memberId") memberId: UUID, @Argument("mainCategory") mainCategory: MainCategory? = null): List<Gageboo>{
+        return gagebooService.getGagebooById(memberId, mainCategory)
     }
 
     // 회원 가계부 단건 저장
     @MutationMapping
-    fun saveGageboo(@Argument("gageboo") gageboo: Gageboo): Gageboo {
+    fun saveGageboo(@Argument("gageboo") @Valid gageboo: Gageboo): Gageboo {
         return gagebooService.saveGageboo(gageboo)
     }
 
@@ -33,7 +33,7 @@ class GagebooController (private var gagebooService: GagebooService) {
 
     // 회원 가계부 단건 삭제
     @MutationMapping
-    fun deleteGageboo(@Argument("gagebooNo") gagebooNo: Int, @Argument("userId") userId: UUID): Int{
-        return gagebooService.deleteGageboo(gagebooNo, userId)
+    fun deleteGageboo(@Argument("gagebooNo") gagebooNo: Int, @Argument("memberId") memberId: UUID): Int{
+        return gagebooService.deleteGageboo(gagebooNo, memberId)
     }
 }

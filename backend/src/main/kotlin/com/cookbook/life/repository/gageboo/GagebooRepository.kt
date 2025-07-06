@@ -8,13 +8,13 @@ import java.util.UUID
 
 interface GagebooRepository : JpaRepository<Gageboo, Int>, JpaSpecificationExecutor<Gageboo> {
     @Override
-    fun findAllByUserId(userId: UUID): List<Gageboo>
+    fun findAllByMemberId(memberId: UUID): List<Gageboo>
 
     @Transactional
-    fun deleteByGagebooNoAndUserId(gagebooNo:Int, userId:UUID): Int
+    fun deleteByGagebooNoAndMemberId(gagebooNo:Int, memberId:UUID): Int
 
     @Transactional
-    fun deleteByUserId(userId: UUID): Int
+    fun deleteByMemberId(memberId: UUID): Int
 
 
 }

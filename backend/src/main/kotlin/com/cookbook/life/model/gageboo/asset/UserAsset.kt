@@ -8,7 +8,7 @@ import java.util.*
 @Table(schema = "gageboo")
 @IdClass(UserAssetId::class)
 class UserAsset(
-    @Id var userId: UUID, // 유저 아이디
+    @Id var memberId: UUID, // 유저 아이디
     @Id var assetNo: Int?, // 자산 번호
     var assetCategoryNo: Int, // 자산 카테고리 번호
     var assetName: String, // 자산 이름

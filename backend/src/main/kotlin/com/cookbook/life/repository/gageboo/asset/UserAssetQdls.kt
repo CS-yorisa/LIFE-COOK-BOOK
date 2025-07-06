@@ -10,7 +10,7 @@ import java.util.UUID
 
 @Repository
 class UserAssetQdls (private val queryFactory: JPAQueryFactory){
-    fun findUserAssset(userId:UUID): List<UserAsset>{
+    fun findUserAssset(memberId:UUID): List<UserAsset>{
         return queryFactory.selectFrom(userAsset).fetch()
     }
 
@@ -28,10 +28,10 @@ class UserAssetQdls (private val queryFactory: JPAQueryFactory){
     }
 
     // 해당 USER 의 자산 번호 중 가장 큰 값 가져와서 + 1
-    fun findUserAssetMaxNo(userId:UUID): Int {
+    fun findUserAssetMaxNo(memberId:UUID): Int {
         var maxNo: Int? = queryFactory.select(userAsset.assetNo.max())
             .from(userAsset)
-            .where(userAsset.userId.eq(userId))
+            .where(userAsset.memberId.eq(memberId))
             .fetchOne()
 
         if(maxNo == null){

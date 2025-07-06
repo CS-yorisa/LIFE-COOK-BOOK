@@ -8,7 +8,7 @@ type AssetCategory{
 }
 
 input UserAssetInput{
-    userId: UUID!, # 유저ID
+    memberId: UUID!, # 유저ID
     assetCategoryNo: Int!, # 자산카테고리 번호
     assetName: String!, # 자산이름
     assetAmount: BigDecimal, # 자산 총액
@@ -19,7 +19,7 @@ input UserAssetInput{
 }
 
 input UserAssetUpdateInput{
-    userId: UUID!,
+    memberId: UUID!,
     assetNo: Int!,
     assetCategoryNo: Int,
     assetName: String,
@@ -31,7 +31,7 @@ input UserAssetUpdateInput{
 }
 
 type UserAsset{
-    userId: UUID!,
+    memberId: UUID!,
     assetNo: Int,
     assetCategoryNo: Int,
     assetName: String,
@@ -44,12 +44,12 @@ type UserAsset{
 
 extend type Query {
     getAssetCommonCategoryList: [AssetCategory]
-    getUserAssetList(userId: UUID): [UserAsset]
+    getUserAssetList(memberId: UUID): [UserAsset]
 }
 
 extend type Mutation {
     insertUserAsset(userAsset: UserAssetInput): Boolean
     updateUserAsset(userAsset: UserAssetInput): UserAsset
-    deleteUserAsset(userId:UUID, no: Int):Boolean
-    deleteAllUserAsset(userId:UUID):Boolean
+    deleteUserAsset(memberId:UUID, no: Int):Boolean
+    deleteAllUserAsset(memberId:UUID):Boolean
 }

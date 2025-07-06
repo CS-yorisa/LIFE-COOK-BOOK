@@ -9,13 +9,13 @@ import java.util.*
 @Repository
 class GagebooQdls (private val queryFactory: JPAQueryFactory){
 
-    fun selectGagebooExpenseSum(userId: UUID, period: String): BigDecimal {
+    fun selectGagebooExpenseSum(memberId: UUID, period: String): BigDecimal {
 
         val fromDate = period + "01"
         val toDate = period + "31"
         var expenseSum = queryFactory.select(gageboo.amounts.sum())
             .from(gageboo)
-            .where(gageboo.userId.eq(userId).and(gageboo.date.between(fromDate, toDate))).fetchOne()
+            .where(gageboo.memberId.eq(memberId).and(gageboo.date.between(fromDate, toDate))).fetchOne()
 
         if (expenseSum == null){
             return BigDecimal.ZERO
@@ -24,16 +24,4 @@ class GagebooQdls (private val queryFactory: JPAQueryFactory){
         }
     }
 
-    fun findUserGagebooMaxNo(userId: UUID): Int {
-        var maxNo: Int? = queryFactory.select(gageboo.gagebooNo.max())
-            .from(gageboo)
-            .where(gageboo.userId.eq(userId))
-            .fetchOne()
-
-        if (maxNo == null) {
-            return 0
-        } else {
-            return maxNo + 1
-        }
-    }
 }

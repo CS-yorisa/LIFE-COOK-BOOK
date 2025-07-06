@@ -8,6 +8,6 @@ import java.util.*
 
 /* multiple PK 설정 */
 data class GagebooCommonId (
-    @Column val no:Int = 0,
-    @Column val id: UUID = UUID(0L, 0L)
+    @Column val categoryNo:Int = 0,
+    @Column val memberId: UUID = UUID(0L, 0L)
 ) : Serializable

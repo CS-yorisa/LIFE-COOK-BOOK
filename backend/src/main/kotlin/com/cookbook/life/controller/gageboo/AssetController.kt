@@ -26,8 +26,8 @@ class AssetController(private var assetService: AssetService) {
 
     // 유저의 자산 목록 조회
     @QueryMapping
-    fun getUserAssetList(@Argument("userId") userId: UUID): List<UserAsset> {
-        return assetService.getUserAssetList(userId)
+    fun getUserAssetList(@Argument("memberId") memberId: UUID): List<UserAsset> {
+        return assetService.getUserAssetList(memberId)
     }
 
 
@@ -39,13 +39,13 @@ class AssetController(private var assetService: AssetService) {
 
     // 유저 자산 단건 삭제
     @MutationMapping
-    fun deleteUserAsset(@Argument("userId") userId: UUID, @Argument("no") no: Int):Boolean{
-        return assetService.deleteUserAsset(userId, no)
+    fun deleteUserAsset(@Argument("memberId") memberId: UUID, @Argument("no") no: Int):Boolean{
+        return assetService.deleteUserAsset(memberId, no)
     }
 
     // 유저 자산 전체 삭제 (회원 탈퇴)
     @MutationMapping
-    fun deleteAllUserAsset(@Argument("userId") userId:UUID):Boolean{
-        return assetService.deleteAllUserAsset(userId)
+    fun deleteAllUserAsset(@Argument("memberId") memberId:UUID):Boolean{
+        return assetService.deleteAllUserAsset(memberId)
     }
 }

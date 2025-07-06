@@ -11,7 +11,7 @@ import java.util.*
 @Table(schema = "gageboo")
 @IdClass(UserGoalId::class)
 class UserSaveGoal (
-    @Id var userId: UUID,
+    @Id var memberId: UUID,
     @Id var goalNo: Int?,
     var period: String, //YYYYMM
     var goalAmount: Long,

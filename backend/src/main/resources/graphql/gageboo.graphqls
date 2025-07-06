@@ -4,7 +4,8 @@ scalar LocalTime
 
 type Gageboo {
     gagebooNo : Int
-    userId : UUID
+    memberId : UUID
+    categoryType : String
     categoryNo : Int
     assetNo: Int
     date: String
@@ -15,7 +16,8 @@ type Gageboo {
 }
 
 input GagebooInput {
-    userId : UUID!
+    memberId : UUID!
+    categoryType : String!
     categoryNo: Int
     assetNo: Int
     date: String
@@ -27,7 +29,8 @@ input GagebooInput {
 
 input GagebooUpdate {
     gagebooNo : Int!
-    userId : UUID
+    categoryType : String!
+    memberId : UUID
     categoryNo: Int
     assetNo: Int
     date: String
@@ -38,11 +41,11 @@ input GagebooUpdate {
 }
 
 type Query {
-    getGagebooById(userId: UUID, mainCategory: String): [Gageboo]
+    getGagebooById(memberId: UUID, mainCategory: String): [Gageboo]
 }
 
 type Mutation{
     saveGageboo(gageboo: GagebooInput): Gageboo
     updateGageboo(gageboo: GagebooUpdate): Gageboo
-    deleteGageboo(gagebooNo: Int, userId:UUID): Int
+    deleteGageboo(gagebooNo: Int, memberId:UUID): Int
 }

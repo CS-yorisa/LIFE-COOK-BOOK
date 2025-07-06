@@ -8,11 +8,11 @@ import java.util.*
 interface GagebooCategoryRepository : JpaRepository<GagebooCategory, Int> {
 
     @Override
-    fun findAllByUserId(id: UUID): List<GagebooCategory>
+    fun findAllByMemberId(memberId: UUID): List<GagebooCategory>
 
     @Transactional
-    fun deleteGagebooCategoriesByUserId(userId: UUID);
+    fun deleteGagebooCategoriesByMemberId(memberId: UUID);
 
     @Transactional
-    fun deleteGagebooCategoryByUserIdAndCategoryNo(userId: UUID, categoryNo: Int);
+    fun deleteGagebooCategoryByMemberIdAndCategoryNo(memberId: UUID, categoryNo: Int);
 }

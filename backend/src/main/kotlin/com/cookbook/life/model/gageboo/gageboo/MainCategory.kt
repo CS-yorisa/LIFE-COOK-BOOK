@@ -1,4 +1,4 @@
-package com.cookbook.life.model.gageboo
+package com.cookbook.life.model.gageboo.gageboo
 
 enum class MainCategory() {
     INCOME,

@@ -1,7 +1,10 @@
 package com.cookbook.life.service.gageboo
 
+import com.cookbook.life.exception.GraphqlErrorCode
+import com.cookbook.life.exception.GraphqlException
 import com.cookbook.life.model.gageboo.gageboo.Gageboo
-import com.cookbook.life.model.gageboo.MainCategory
+import com.cookbook.life.model.gageboo.gageboo.MainCategory
+import com.cookbook.life.repository.gageboo.GagebooCategoryQdls
 import com.cookbook.life.repository.gageboo.GagebooQdls
 import com.cookbook.life.repository.gageboo.GagebooRepository
 import com.cookbook.life.repository.gageboo.asset.UserAssetRepository
@@ -29,15 +32,18 @@ class GagebooService(private val entityManager: EntityManager){
     @Autowired
     private lateinit var gagebooQdls: GagebooQdls
 
+    @Autowired
+    private lateinit var gagebooCategoryQdls: GagebooCategoryQdls
+
     /*
         가계부 조회
      */
-    fun getGagebooById(userId : UUID, mainCategory: MainCategory?): List<Gageboo>{
+    fun getGagebooById(memberId : UUID, mainCategory: MainCategory?): List<Gageboo>{
         var spec: Specification<Gageboo?> =
             Specification<Gageboo?> { root: Root<Gageboo?>?, query: CriteriaQuery<*>?, criteriaBuilder: CriteriaBuilder? -> null }
 
 
-        spec = spec.and(findByUserId(userId))
+        spec = spec.and(findByMemberId(memberId))
 
         // 지출만 확인
         if(MainCategory.EXPENSES.equals(mainCategory)){
@@ -53,34 +59,24 @@ class GagebooService(private val entityManager: EntityManager){
 
         // 지출 포함 여부가 null 인 경우
         if (gageboo.expenceInclude == null) {
+            // 가계부 카테고리 타입에 따라 지출 포함 여부 설정
             gageboo.expenceInclude = MainCategory.EXPENSES.equals(gageboo.categoryType)
         }
 
         // 지출일 경우 음수로 저장, 수입일 경우 양수로 저장
-        if((MainCategory.EXPENSES.equals(gageboo.categoryType)
-                && gageboo.amounts.compareTo(BigDecimal.ZERO) == 1)
-            || (MainCategory.INCOME.equals(gageboo.categoryType)
-                && gageboo.amounts.compareTo(BigDecimal.ZERO) == -1)) {
-
+        if((MainCategory.EXPENSES.equals(gageboo.categoryType) && gageboo.amounts.compareTo(BigDecimal.ZERO) == 1)
+            || (MainCategory.INCOME.equals(gageboo.categoryType) && gageboo.amounts.compareTo(BigDecimal.ZERO) == -1)) {
             gageboo.amounts = gageboo.amounts.multiply(BigDecimal.valueOf(-1))
         }
 
-        val gagebooNo: Int = gagebooQdls.findUserGagebooMaxNo(gageboo.userId)
-        gageboo.gagebooNo = gagebooNo
+        // 존재하는 카테고리 번호인지 확인
+        val categoryNo = gagebooCategoryQdls.validationUserCategory(memberId = gageboo.memberId, categoryNo = gageboo.categoryNo, mainCategory = gageboo.categoryType);
+        if(categoryNo == null){
+            throw GraphqlException(GraphqlErrorCode.CATEGORY_NOT_FOUND)
+        }
+
 
         var returnGageboo = gagebooRepository.save(gageboo)
-
-
-        // 자산에 해당하는 전체 총액 sum => 업데이트를 해준다
-        // 1. 집계 테이블을 따로 ⇒ 월별 집계 (best로 보임 => 이걸로 일단 진행해보기로 ~~~)
-        // 사용량이 많아지면 문제는된다;; 흑흑.. 잘됐네 ^^ 파티셔닝.... 년도만 파티션먼저 생각좀해보렉요.
-        // 2. cache 를 적용한다... 생각좀 해볼게요;
-
-
-        // 지출 확인 후 자산 총액 변경 (가계부를 계속 수정할 수 있으므로 x)
-//        val userAsset = userAssetRepository.findByUserIdAndAssetNo(gageboo.userId, gageboo.assetNo)
-//        // dirtychecking
-//        userAsset.assetAmount += gageboo.amounts
 
         return returnGageboo
     }
@@ -95,13 +91,13 @@ class GagebooService(private val entityManager: EntityManager){
     /*
         가계부 번호와 유저아이디를 가지고 가계부 삭제
      */
-    fun deleteGageboo(gagebooNo:Int, userId:UUID): Int{
-        return gagebooRepository.deleteByGagebooNoAndUserId(gagebooNo, userId)
+    fun deleteGageboo(gagebooNo:Int, memberId:UUID): Int{
+        return gagebooRepository.deleteByGagebooNoAndMemberId(gagebooNo, memberId)
     }
 
     /* (회원 탈퇴용) 회원 전체 가계부 삭제 */
-    fun deleteUserAllGageboo(userId: UUID): Int{
-        return gagebooRepository.deleteByUserId(userId)
+    fun deleteUserAllGageboo(memberId: UUID): Int{
+        return gagebooRepository.deleteByMemberId(memberId)
     }
 
     /*
@@ -120,11 +116,11 @@ class GagebooService(private val entityManager: EntityManager){
     /*
         predicate를 통해 특정 유저의 가계부만 조회
      */
-    fun findByUserId(userId: UUID): Specification<Gageboo?> {
+    fun findByMemberId(memberId: UUID): Specification<Gageboo?> {
         return Specification<Gageboo?> { root: Root<Gageboo?>, query: CriteriaQuery<*>?, criteriaBuilder: CriteriaBuilder ->
             criteriaBuilder.equal(
-                root.get<Any>("userId"),
-                userId
+                root.get<Any>("memberId"),
+                memberId
             )
         }
     }
