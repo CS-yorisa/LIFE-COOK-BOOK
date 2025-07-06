@@ -22,3 +22,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
+spring:
+  profiles:
+    default: local
+spring:
+  config:
+    activate:
+      on-profile: local, dev, prod

@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+
+  client:
+    container_name: nginx-svelte
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/nginx/nginx.local.conf:/etc/nginx/nginx.local.conf
+      - ./frontend/nginx/nginx.prod.conf:/etc/nginx/nginx.prod.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: >
+      /bin/sh -c "cp /etc/nginx/nginx.${ENVIRONMENT}.conf /etc/nginx/nginx.conf &&
+      while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
+
+  cache:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+
+  database:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres-init/:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_SCHEMA}
+
+  server:
+    container_name: spring
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    depends_on:
+      - cache
+      - database
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - DB_SCHEMA=${DB_SCHEMA}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_ENDPOINT=${DB_ENDPOINT}
+      - DB_PORT=${DB_PORT}
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
