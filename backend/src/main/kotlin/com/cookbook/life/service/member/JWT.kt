@@ -1,7 +1,7 @@
 package  com.cookbook.life.service.member
 
 import com.cookbook.life.dto.member.Token
-import com.cookbook.life.model.member.User
+import com.cookbook.life.model.member.Member
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -16,8 +16,8 @@ import javax.crypto.SecretKey
 class JWT {
     private val key: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256) // 토큰 암호화키
 
-    fun createTokenData(user: User): Token {
-        return createTokenInfo("${user.username}:${user.type}")
+    fun createTokenData(member: Member): Token {
+        return createTokenInfo("${member.username}:${member.type}")
     }
 
     private fun createTokenInfo(email: String): Token {

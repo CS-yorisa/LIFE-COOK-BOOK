@@ -7,5 +7,5 @@ import java.util.*
 
 interface GroupMappingRepository : JpaRepository<GroupMapping, GroupMappingId> {
     fun findByGroup_GroupId(groupId: UUID): List<GroupMapping>
-    fun deleteByGroup_GroupIdAndUser_Id(groupId: UUID, userId: UUID)
+    fun deleteByGroup_GroupIdAndMemberId(groupId: UUID, memberId: UUID)
 }

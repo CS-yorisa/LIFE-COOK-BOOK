@@ -1,9 +1,11 @@
 package com.cookbook.life.controller.group
 
 import com.cookbook.life.model.group.Group
-import com.cookbook.life.model.member.User
+import com.cookbook.life.model.member.Member
 import com.cookbook.life.service.group.GroupService
-import org.springframework.graphql.data.method.annotation.*
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import java.util.*
 
@@ -20,7 +22,7 @@ class GroupController(
     }
 
     @QueryMapping
-    fun getUsersByGroup(@Argument groupId: UUID): List<User> =
+    fun getUsersByGroup(@Argument groupId: UUID): List<Member> =
         groupService.getUsersByGroup(groupId)
 
     @MutationMapping
@@ -43,12 +45,12 @@ class GroupController(
     }
 
     @MutationMapping
-    fun joinGroup(@Argument groupId: UUID, @Argument userId: UUID): String {
-        return groupService.joinGroup(groupId, userId)
+    fun joinGroup(@Argument groupId: UUID, @Argument memberId: UUID): String {
+        return groupService.joinGroup(groupId, memberId)
     }
 
     @MutationMapping
-    fun leaveGroup(@Argument groupId: UUID, @Argument userId: UUID): String {
-        return groupService.leaveGroup(groupId, userId)
+    fun leaveGroup(@Argument groupId: UUID, @Argument memberId: UUID): String {
+        return groupService.leaveGroup(groupId, memberId)
     }
 }

@@ -6,7 +6,4 @@ object EndPoint {
     const val SIGN_IN = "/signin"
     const val VERIFY_TOKEN = "/verify"
     const val REFRESH_TOKEN = "/refresh-token"
-
-    const val USER_ROOT_PATH = "/users"
-    const val ADMIN_ROOT_PATH = "/admin"
 }
