@@ -6,6 +6,10 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 
+	server: {
+		port: 3000
+	},
+
 	test: {
 		workspace: [
 			{
