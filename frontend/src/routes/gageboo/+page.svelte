@@ -1,5 +1,7 @@
-<h1>gageboo</h1>
+<script lang="ts">
+	import MainLayout from '$lib/components/common/MainLayout.svelte';
+</script>
 
-<ul>
-	<li><a href="/gageboo/test">test</a></li>
-</ul>
+<MainLayout activeTab="gageboo">
+	<h1 class="mb-6 text-3xl font-bold">가계부</h1>
+</MainLayout>
