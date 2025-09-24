@@ -1,5 +1,7 @@
 package com.cookbook.life.service.gageboo
 
+import com.cookbook.life.dto.gageboo.GagebooSaveRequest
+import com.cookbook.life.dto.gageboo.GagebooSearchRequest
 import com.cookbook.life.exception.GraphqlErrorCode
 import com.cookbook.life.exception.GraphqlException
 import com.cookbook.life.model.gageboo.gageboo.Gageboo
@@ -38,15 +40,15 @@ class GagebooService(private val entityManager: EntityManager){
     /*
         가계부 조회
      */
-    fun getGagebooById(memberId : UUID, mainCategory: MainCategory?): List<Gageboo>{
+    fun getGagebooById(gagebooSearchRequest: GagebooSearchRequest): List<Gageboo>{
         var spec: Specification<Gageboo?> =
             Specification<Gageboo?> { root: Root<Gageboo?>?, query: CriteriaQuery<*>?, criteriaBuilder: CriteriaBuilder? -> null }
 
 
-        spec = spec.and(findByMemberId(memberId))
+        spec = spec.and(findByMemberId(gagebooSearchRequest.memberId))
 
         // 지출만 확인
-        if(MainCategory.EXPENSES.equals(mainCategory)){
+        if(MainCategory.EXPENSES.equals(gagebooSearchRequest.mainCategory)){
             spec = spec.and(findExpences())
         }
         return gagebooRepository.findAll(spec);
@@ -55,28 +57,17 @@ class GagebooService(private val entityManager: EntityManager){
     /*
         가계부 저장
      */
-    fun saveGageboo(gageboo: Gageboo): Gageboo {
+    fun saveGageboo(gagebooSaveRequest: GagebooSaveRequest): Gageboo {
 
-        // 지출 포함 여부가 null 인 경우
-        if (gageboo.expenceInclude == null) {
-            // 가계부 카테고리 타입에 따라 지출 포함 여부 설정
-            gageboo.expenceInclude = MainCategory.EXPENSES.equals(gageboo.categoryType)
-        }
-
-        // 지출일 경우 음수로 저장, 수입일 경우 양수로 저장
-        if((MainCategory.EXPENSES.equals(gageboo.categoryType) && gageboo.amounts.compareTo(BigDecimal.ZERO) == 1)
-            || (MainCategory.INCOME.equals(gageboo.categoryType) && gageboo.amounts.compareTo(BigDecimal.ZERO) == -1)) {
-            gageboo.amounts = gageboo.amounts.multiply(BigDecimal.valueOf(-1))
-        }
-
+        gagebooSaveRequest.setting()
         // 존재하는 카테고리 번호인지 확인
-        val categoryNo = gagebooCategoryQdls.validationUserCategory(memberId = gageboo.memberId, categoryNo = gageboo.categoryNo, mainCategory = gageboo.categoryType);
+        val categoryNo = gagebooCategoryQdls.validationUserCategory(memberId = gagebooSaveRequest.memberId, categoryNo = gagebooSaveRequest.categoryNo, mainCategory = gagebooSaveRequest.categoryType);
         if(categoryNo == null){
             throw GraphqlException(GraphqlErrorCode.CATEGORY_NOT_FOUND)
         }
 
-
-        var returnGageboo = gagebooRepository.save(gageboo)
+        val gageboo = Gageboo.create(gagebooSaveRequest)
+        val returnGageboo = gagebooRepository.save(gageboo)
 
         return returnGageboo
     }

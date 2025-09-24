@@ -1,9 +1,14 @@
 package com.cookbook.life.model.gageboo.gageboo
 
+import com.cookbook.life.dto.gageboo.GagebooSaveRequest
 import com.cookbook.life.validation.ValidEnum
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import java.io.Serializable
 import java.math.BigDecimal
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -17,9 +22,32 @@ class Gageboo (
     @Enumerated(EnumType.STRING) @ValidEnum(enumClass = MainCategory::class) var categoryType: MainCategory,
     var categoryNo: Int,
     var assetNo: Int,
-    var date: String?,
+    var date: LocalDate,
     var content: String?,
     var amounts: BigDecimal,
     var star: Int?,
     var expenceInclude: Boolean?,
-) : Serializable
+    @CreatedDate
+    var createdAt: LocalDateTime?,
+    @LastModifiedDate
+    var updatedAt: LocalDateTime?,
+) : Serializable {
+    companion object {
+        fun create(gagebooSaveRequest: GagebooSaveRequest): Gageboo {
+            return Gageboo(
+                gagebooNo = null,
+                memberId = gagebooSaveRequest.memberId,
+                categoryType = gagebooSaveRequest.categoryType,
+                categoryNo = gagebooSaveRequest.categoryNo,
+                assetNo = gagebooSaveRequest.assetNo,
+                date = gagebooSaveRequest.date,
+                content = gagebooSaveRequest.content,
+                amounts = gagebooSaveRequest.amounts,
+                star = gagebooSaveRequest.star,
+                expenceInclude = gagebooSaveRequest.expenceInclude,
+                createdAt = null,
+                updatedAt = null,
+            )
+        }
+    }
+}
