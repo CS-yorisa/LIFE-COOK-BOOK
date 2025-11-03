@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 
+const baseUrl = 'http://localhost:8080';
 export interface User {
-	id: string;
 	email: string;
-	name: string;
+	password: string;
 }
 
 export interface AuthState {
@@ -21,15 +21,33 @@ function createAuthStore() {
 
 	return {
 		subscribe,
-		login: (user: User) => {
-			update(state => ({
-				...state,
-				user,
-				isAuthenticated: true,
-				isLoading: false
-			}));
-			// 로컬 스토리지에 저장
-			localStorage.setItem('user', JSON.stringify(user));
+		login: async (user: User): Promise<boolean> => {
+			update(state => ({ ...state, isLoading: true }));
+			try {
+				const res = await fetch(`${baseUrl}/member/signin`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email: user.email, passWord: user.password })
+				});
+				if (!res.ok) {
+					const errBody = await res.json().catch(() => null);
+					throw new Error(errBody?.message || 'Login failed');
+				}
+				const data = (await res.json()) as { access: string; refresh: string };
+				if (typeof window !== 'undefined') {
+					localStorage.setItem('access', data.access);
+					localStorage.setItem('refresh', data.refresh);
+				}
+				update(state => ({
+					...state,
+					isAuthenticated: true,
+					isLoading: false
+				}));
+				return true;
+			} catch (error) {
+				update(state => ({ ...state, isLoading: false }));
+				throw error;
+			}
 		},
 		logout: () => {
 			update(state => ({
@@ -39,7 +57,8 @@ function createAuthStore() {
 				isLoading: false
 			}));
 			// 로컬 스토리지에서 제거
-			localStorage.removeItem('user');
+			localStorage.removeItem('access');
+			localStorage.removeItem('refresh');
 		},
 		initialize: () => {
 			// 페이지 로드 시 로컬 스토리지에서 사용자 정보 복원

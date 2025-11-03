@@ -3,6 +3,10 @@
 	import { auth } from '$lib/auth';
 	import { goto } from '$app/navigation';
 
+	if (localStorage.getItem('access')) {
+		goto('/main');
+	}
+
 	let email = '';
 	let password = '';
 	let isLoading = false;
@@ -21,9 +25,8 @@
 			await new Promise(resolve => setTimeout(resolve, 1000));
 
 			const user = {
-				id: '1',
 				email,
-				name: email.split('@')[0]
+				password
 			};
 
 			auth.login(user);
@@ -67,7 +70,7 @@
 				type="email"
 				bind:value={email}
 				placeholder="m@example.com"
-				class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+				class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 				required
 			/>
 		</div>
@@ -79,10 +82,10 @@
 					id="password"
 					type="password"
 					bind:value={password}
-					class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+					class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 					required
 				/>
-				<div class="absolute top-1/2 right-3 -translate-y-1/2 transform">
+				<div class="absolute right-3 top-1/2 -translate-y-1/2 transform">
 					<a href="/member/findPassword" class="text-sm text-gray-600 hover:text-gray-800">
 						Forgot your password?
 					</a>

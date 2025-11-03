@@ -14,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 @Configuration
@@ -39,12 +42,6 @@ class SecurityConfig(
                     .requestMatchers("/member/signup", "/member/signin", "/member/verify", "/error").permitAll()
                     .anyRequest().authenticated()
             })
-            // .requestMatchers(EndPoint.AUTH_ROOT_PATH, EndPoint.SIGN_UP, EndPoint.SIGN_IN).permitAll()
-//            .logout { logout: LogoutConfigurer<HttpSecurity?> ->
-//                logout
-//                    .logoutSuccessUrl("/login")
-//                    .invalidateHttpSession(true)
-//            }
             .sessionManagement { session: SessionManagementConfigurer<HttpSecurity?> ->
                 session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -53,6 +50,7 @@ class SecurityConfig(
                 JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter::class.java
             )
+            .cors { }
         return http.build()
     }
 
@@ -66,4 +64,23 @@ class SecurityConfig(
         return BCryptPasswordEncoder()
     }
 
+    // 위 설정에서 .cors{}를 해주어야만 아래 cors 설정이 적용된다.
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+
+        // 허용할 URL들
+        configuration.allowedOrigins = listOf("http://localhost:3000")
+        // 허용할 Method들
+        configuration.allowedMethods = listOf("POST", "GET", "DELETE", "PUT")
+        // 허용할 Header들
+        configuration.allowedHeaders = listOf("*")
+        // 세션 쿠키를 유지할 것 인지
+        configuration.allowCredentials = true
+
+        // cors 적용
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
 }
