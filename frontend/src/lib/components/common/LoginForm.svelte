@@ -3,10 +3,6 @@
 	import { auth } from '$lib/auth';
 	import { goto } from '$app/navigation';
 
-	if (localStorage.getItem('access')) {
-		goto('/main');
-	}
-
 	let email = '';
 	let password = '';
 	let isLoading = false;
