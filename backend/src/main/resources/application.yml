@@ -22,12 +22,12 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
+  profiles:
+    default: local
+  config:
+    activate:
+          on-profile: local, dev, prod
   jwt:
     secret-key: SECRET_KEY
     access-token-expire-time: 600
     refresh-token-expire-time: 86400
-#  profiles:
-#    default: local
-#  config:
-#    activate:
-#      on-profile: local, dev, prod

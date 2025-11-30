@@ -1,5 +1,7 @@
 package com.cookbook.life.controller.gageboo
 
+import com.cookbook.life.dto.gageboo.GagebooSaveRequest
+import com.cookbook.life.dto.gageboo.GagebooSearchRequest
 import com.cookbook.life.model.gageboo.gageboo.Gageboo
 import com.cookbook.life.model.gageboo.gageboo.MainCategory
 import com.cookbook.life.service.gageboo.GagebooService
@@ -15,14 +17,14 @@ class GagebooController (private var gagebooService: GagebooService) {
 
     // 회원 가계부 조회
     @QueryMapping
-    fun getGagebooById(@Argument("memberId") memberId: UUID, @Argument("mainCategory") mainCategory: MainCategory? = null): List<Gageboo>{
-        return gagebooService.getGagebooById(memberId, mainCategory)
+    fun getGagebooById(@Argument("gagebooSearchRequest") gagebooSearchRequest: GagebooSearchRequest) : List<Gageboo>{
+        return gagebooService.getGagebooById(gagebooSearchRequest)
     }
 
     // 회원 가계부 단건 저장
     @MutationMapping
-    fun saveGageboo(@Argument("gageboo") @Valid gageboo: Gageboo): Gageboo {
-        return gagebooService.saveGageboo(gageboo)
+    fun saveGageboo(@Argument("gageboo") @Valid gagebooSaveRequest: GagebooSaveRequest): Gageboo {
+        return gagebooService.saveGageboo(gagebooSaveRequest)
     }
 
     // 회원 가계부 단건 수정

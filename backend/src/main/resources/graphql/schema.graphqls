@@ -11,6 +11,18 @@ type Group {
     groupPassword: String
 }
 
+extend type Query {
+    getGroups: [Group!]!
+    getGroup(groupId: ID!): Group
+    getUsersByGroup(groupId: ID!): [User!]!
+}
+
+extend type Mutation {
+    createGroup(groupName: String!, limitPerson: Int!, groupPassword: String): Group!
+    updateGroup(groupId: ID!, groupName: String, limitPerson: Int, groupPassword: String): Group!
+    joinGroup(groupId: ID!, userId: ID!): String!
+    leaveGroup(groupId: ID!, userId: ID!): String!
+}
 #type Query {
 #    getGroups: [Group!]!
 #    getGroup(groupId: ID!): Group
