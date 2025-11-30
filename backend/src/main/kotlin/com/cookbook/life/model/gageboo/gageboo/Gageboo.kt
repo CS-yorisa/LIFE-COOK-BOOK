@@ -5,6 +5,7 @@ import com.cookbook.life.validation.ValidEnum
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -12,6 +13,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 @Table(name="gageboo", schema = "gageboo", uniqueConstraints = [UniqueConstraint(name = "gageboo_unique_key", columnNames = ["gagebooNo", "memberId"])]) // multiple pk 대신 unique key 추가
 class Gageboo (
     // GenerationType.IDENTITY : 기본 키 생성을 데이터베이스에 위임
