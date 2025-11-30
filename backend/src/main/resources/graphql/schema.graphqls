@@ -23,3 +23,15 @@ extend type Mutation {
     joinGroup(groupId: ID!, userId: ID!): String!
     leaveGroup(groupId: ID!, userId: ID!): String!
 }
+#type Query {
+#    getGroups: [Group!]!
+#    getGroup(groupId: ID!): Group
+#    getUsersByGroup(groupId: ID!): [User!]!
+#}
+#
+#type Mutation {
+#    createGroup(groupName: String!, limitPerson: Int!, groupPassword: String): Group!
+#    updateGroup(groupId: ID!, groupName: String, limitPerson: Int, groupPassword: String): Group!
+#    joinGroup(groupId: ID!, userId: ID!): String!
+#    leaveGroup(groupId: ID!, userId: ID!): String!
+#}
